@@ -45,7 +45,7 @@ viewpoints, the system:
 
 | Category | Tool |
 |---|---|
-| Language | Python 3.12 |
+| Language | Python 3.10 |
 | Computer Vision | OpenCV (`opencv-python`) — SIFT, BFMatcher, SGBM, rectification |
 | Numerical | NumPy |
 | Visualization | Matplotlib, OpenCV colormaps |
@@ -83,7 +83,7 @@ stereo-depth-estimator/
 
 - **Python 3.9–3.12** (3.13/3.14 are too new for `opencv-python`'s prebuilt
   wheels as of writing — pip will fall back to a source build and can hit a
-  NumPy 1.x/2.x ABI mismatch. Developed and tested on 3.12.)
+  NumPy 1.x/2.x ABI mismatch. Developed and tested on Python 3.10.)
 - pip
 - No GPU, no external services, and no GUI required — the entire project
   runs from the command line and reads/writes plain files on disk
@@ -99,7 +99,7 @@ git clone https://github.com/Official-HarshitAgarwal/stereo-depth-estimator.git
 cd stereo-depth-estimator
 
 # 2. Create an isolated environment using Python 3.9-3.12
-#    (Windows: use `py -3.12 -m venv venv` if you have multiple Python
+#    (Windows: use `py -3.10 -m venv venv` if you have multiple Python
 #    versions installed — opencv-python has no prebuilt wheels for 3.13/3.14
 #    yet, which causes a NumPy ABI mismatch crash on import)
 python3 -m venv venv

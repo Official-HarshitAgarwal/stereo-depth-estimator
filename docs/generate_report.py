@@ -164,7 +164,7 @@ story.append(bullets([
 # 8. Implementation Details
 story.append(Paragraph("8. Implementation Details", styles["H1"]))
 story.append(Paragraph(
-    "The pipeline is implemented in Python 3.12 using OpenCV for image processing and "
+    "The pipeline is implemented in Python 3.10 using OpenCV for image processing and "
     "geometric primitives, and NumPy for the custom RANSAC / 8-point algorithm math. The "
     "Fundamental matrix is estimated by a from-scratch loop: (1) sample 8 random correspondences, "
     "(2) solve the normalized 8-point linear system via SVD, (3) enforce the rank-2 constraint "
