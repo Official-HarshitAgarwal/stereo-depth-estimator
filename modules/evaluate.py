@@ -34,7 +34,8 @@ def disparity_coverage(disparity: np.ndarray) -> float:
     return float(100 * np.sum(np.isfinite(disparity)) / disparity.size)
 
 
-def run_unit_style_checks(F, mask_inliers, disparity, depth) -> dict:
+def run_unit_style_checks(F: np.ndarray, mask_inliers: np.ndarray,
+                           disparity: np.ndarray, depth: np.ndarray) -> dict:
     """Aggregate a small report-friendly dict of validation results."""
     return {
         "ransac_inlier_ratio_pct": round(100 * inlier_ratio(mask_inliers), 2),

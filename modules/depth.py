@@ -12,6 +12,8 @@ Responsible for:
   - Depth statistics/evaluation helpers
 """
 
+from typing import Optional
+
 import numpy as np
 import cv2
 
@@ -45,8 +47,8 @@ def compute_disparity(img_left_gray: np.ndarray, img_right_gray: np.ndarray) -> 
     return raw_disp
 
 
-def disparity_to_depth(disparity: np.ndarray, focal_length_px: float = None,
-                        baseline_m: float = None) -> np.ndarray:
+def disparity_to_depth(disparity: np.ndarray, focal_length_px: Optional[float] = None,
+                        baseline_m: Optional[float] = None) -> np.ndarray:
     """
     Convert a disparity map to a metric depth map using:
         depth (m) = (focal_length_px * baseline_m) / disparity_px

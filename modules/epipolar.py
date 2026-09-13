@@ -16,6 +16,8 @@ topics from the Computer Vision course.
 """
 
 import random
+from typing import Optional, Tuple
+
 import numpy as np
 import cv2
 
@@ -25,7 +27,8 @@ from .utils import get_logger
 logger = get_logger(__name__)
 
 
-def detect_and_match_features(img_left_gray: np.ndarray, img_right_gray: np.ndarray):
+def detect_and_match_features(img_left_gray: np.ndarray, img_right_gray: np.ndarray) -> Tuple[
+        list, list, list, np.ndarray, np.ndarray]:
     """SIFT feature detection + Lowe's-ratio-filtered brute-force matching."""
     sift = cv2.SIFT_create(nfeatures=config.MAX_FEATURES)
     kp1, des1 = sift.detectAndCompute(img_left_gray, None)
@@ -159,7 +162,8 @@ def estimate_fundamental_ransac(pts1: np.ndarray, pts2: np.ndarray,
     return best_F, best_inliers
 
 
-def recover_relative_pose(F: np.ndarray, pts1: np.ndarray, pts2: np.ndarray, K: np.ndarray):
+def recover_relative_pose(F: np.ndarray, pts1: np.ndarray, pts2: np.ndarray,
+                           K: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     """Derive Essential matrix E from F, then recover relative rotation/translation."""
     E = K.T @ F @ K
     _, R, t, mask = cv2.recoverPose(E, pts1, pts2, K)
@@ -167,6 +171,6 @@ def recover_relative_pose(F: np.ndarray, pts1: np.ndarray, pts2: np.ndarray, K: 
     return E, R, t, mask
 
 
-def compute_epipolar_lines(F: np.ndarray, pts: np.ndarray, which_image: int):
+def compute_epipolar_lines(F: np.ndarray, pts: np.ndarray, which_image: int) -> np.ndarray:
     """Compute epipolar lines in the OTHER image for points in `which_image`."""
     return cv2.computeCorrespondEpilines(pts.reshape(-1, 1, 2), which_image, F).reshape(-1, 3)

@@ -170,6 +170,17 @@ sanity, the epipolar constraint residual, disparity coverage, the
 disparity→depth inverse relationship, correct NaN-handling at zero
 disparity, and clear error handling for missing input files.
 
+## Benchmark: Custom RANSAC vs. OpenCV Built-in
+
+```bash
+python3 docs/benchmark_ransac.py
+```
+
+Runs the hand-rolled RANSAC estimator and `cv2.findFundamentalMat` on the
+same feature correspondences and reports inlier ratio, epipolar residual,
+and runtime for both (averaged over 5 runs). Results are written to
+`docs/benchmark_results.json` and included in the project report.
+
 ## Regenerating the Design Diagrams
 
 ```bash

@@ -11,7 +11,8 @@ import cv2
 import numpy as np
 
 
-def draw_matches(img_left, kp1, img_right, kp2, matches, inlier_mask=None, max_draw=60):
+def draw_matches(img_left: np.ndarray, kp1: list, img_right: np.ndarray, kp2: list,
+                  matches: list, inlier_mask: np.ndarray = None, max_draw: int = 60) -> np.ndarray:
     """Draw a subsample of matches, colored green for RANSAC inliers."""
     if inlier_mask is not None:
         matches = [m for m, keep in zip(matches, inlier_mask) if keep]

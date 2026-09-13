@@ -161,6 +161,45 @@ story.append(bullets([
     "real calibration output (via cv2.calibrateCamera) without any interface changes.",
 ]))
 
+story.append(Paragraph("7.1 Benchmark: Custom RANSAC vs. OpenCV Built-in", styles["H2"]))
+story.append(Paragraph(
+    "To validate the custom RANSAC implementation rather than merely assert its correctness, "
+    "docs/benchmark_ransac.py runs both the hand-rolled estimator and cv2.findFundamentalMat "
+    "(also RANSAC-based) on the identical 1,332 SIFT correspondences from the Aloe stereo pair, "
+    "averaged over 5 runs.", styles["Body"]))
+
+if os.path.exists(os.path.join(ROOT, "docs", "benchmark_results.json")):
+    with open(os.path.join(ROOT, "docs", "benchmark_results.json")) as f:
+        bench = json.load(f)
+    bdata = [
+        ["Metric", "Custom RANSAC", "cv2.findFundamentalMat"],
+        ["Inliers (of 1,332)", str(int(bench["custom_ransac"]["inliers"])), str(int(bench["opencv_ransac"]["inliers"]))],
+        ["Inlier ratio", f"{bench['custom_ransac']['inlier_ratio_pct']}%", f"{bench['opencv_ransac']['inlier_ratio_pct']}%"],
+        ["Mean epipolar residual", str(bench["custom_ransac"]["mean_epipolar_residual"]), str(bench["opencv_ransac"]["mean_epipolar_residual"])],
+        ["Runtime (avg of 5 runs)", f"{bench['custom_ransac']['runtime_sec']} s", f"{bench['opencv_ransac']['runtime_sec']} s"],
+    ]
+    btable = Table(bdata, colWidths=[6 * cm, 4.5 * cm, 4.5 * cm])
+    btable.setStyle(TableStyle([
+        ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#FAEEDA")),
+        ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
+        ("GRID", (0, 0), (-1, -1), 0.5, colors.HexColor("#B4B2A9")),
+        ("FONTSIZE", (0, 0), (-1, -1), 9),
+        ("ROWBACKGROUNDS", (0, 1), (-1, -1), [colors.white, colors.HexColor("#F1EFE8")]),
+        ("TOPPADDING", (0, 0), (-1, -1), 4),
+        ("BOTTOMPADDING", (0, 0), (-1, -1), 4),
+    ]))
+    story.append(Spacer(1, 6))
+    story.append(btable)
+    story.append(Spacer(1, 6))
+    story.append(Paragraph(
+        "The custom implementation finds a higher inlier ratio because it refits F using the full "
+        "inlier set once RANSAC converges - a refinement step not exposed by the single OpenCV call. "
+        "This comes at the cost of a marginally higher mean residual and roughly 4x the runtime, "
+        "since the Python-level sampling loop cannot match OpenCV's compiled C++ implementation for "
+        "raw speed. This is an expected and defensible trade-off: the goal of the custom "
+        "implementation was to demonstrate the algorithm, not to outperform a mature, "
+        "highly-optimized library function on wall-clock time.", styles["Body"]))
+
 # 8. Implementation Details
 story.append(Paragraph("8. Implementation Details", styles["H1"]))
 story.append(Paragraph(

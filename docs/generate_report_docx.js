@@ -10,6 +10,7 @@ const ROOT = path.resolve(__dirname, "..");
 const DIAG = path.join(ROOT, "docs", "diagrams");
 const OUT = path.join(ROOT, "outputs");
 const metrics = JSON.parse(fs.readFileSync(path.join(OUT, "summary_metrics.json")));
+const benchmark = JSON.parse(fs.readFileSync(path.join(ROOT, "docs", "benchmark_results.json")));
 
 function imgDims(filePath, maxWidthPx = 550) {
   // crude PNG dimension reader (avoids extra deps)
@@ -151,6 +152,17 @@ const doc = new Document({
       bullet("SGBM over simple block matching: Semi-Global Block Matching produces materially smoother, more complete disparity maps at a modest computational cost."),
       bullet("Modular package layout: calibration, epipolar geometry, and depth estimation are separated into independent modules so each can be unit-tested and reasoned about in isolation."),
       bullet("Simulated intrinsics: since no physical stereo rig/checkerboard was available for this coursework project, plausible fixed intrinsics were used; the code path supports swapping in real calibration output (via cv2.calibrateCamera) without any interface changes."),
+
+      heading2("7.1 Benchmark: Custom RANSAC vs. OpenCV Built-in"),
+      body("To validate the custom RANSAC implementation rather than merely assert its correctness, docs/benchmark_ransac.py runs both the hand-rolled estimator and cv2.findFundamentalMat (also RANSAC-based) on the identical 1,332 SIFT correspondences from the Aloe stereo pair, averaged over 5 runs."),
+      metricsTable([
+        ["Inliers (of 1,332)", `${Math.round(benchmark.custom_ransac.inliers)} (custom)  /  ${Math.round(benchmark.opencv_ransac.inliers)} (OpenCV)`],
+        ["Inlier ratio", `${benchmark.custom_ransac.inlier_ratio_pct}% (custom)  /  ${benchmark.opencv_ransac.inlier_ratio_pct}% (OpenCV)`],
+        ["Mean epipolar residual", `${benchmark.custom_ransac.mean_epipolar_residual} (custom)  /  ${benchmark.opencv_ransac.mean_epipolar_residual} (OpenCV)`],
+        ["Runtime (avg of 5 runs)", `${benchmark.custom_ransac.runtime_sec}s (custom)  /  ${benchmark.opencv_ransac.runtime_sec}s (OpenCV)`],
+      ]),
+      new Paragraph({ text: "", spacing: { after: 120 } }),
+      body("The custom implementation finds a higher inlier ratio because it refits F using the full inlier set once RANSAC converges - a refinement step not exposed by the single OpenCV call. This comes at the cost of a marginally higher mean residual and roughly 4x the runtime, since the Python-level sampling loop cannot match OpenCV's compiled C++ implementation for raw speed. This is an expected and defensible trade-off: the goal of the custom implementation was to demonstrate the algorithm, not to outperform a mature, highly-optimized library function on wall-clock time."),
 
       // 8. Implementation Details
       heading1("8. Implementation Details"),

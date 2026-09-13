@@ -31,7 +31,7 @@ from modules.utils import get_logger, load_image, ensure_dir, save_image, save_c
 logger = get_logger("main")
 
 
-def parse_args():
+def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Stereo Vision Depth Estimator")
     parser.add_argument("--left", default=config.LEFT_IMAGE_PATH, help="Path to left image")
     parser.add_argument("--right", default=config.RIGHT_IMAGE_PATH, help="Path to right image")
