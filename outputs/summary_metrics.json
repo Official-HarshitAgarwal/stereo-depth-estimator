@@ -1,23 +1,23 @@
 {
-  "runtime_sec": 4.25,
+  "runtime_sec": 5.48,
   "num_matches": 1327,
-  "num_ransac_inliers": 999,
+  "num_ransac_inliers": 1005,
   "epipolar_constraint_check": {
-    "mean_abs_residual": 0.13516960255203075,
-    "median_abs_residual": 0.09342949523227162,
-    "max_abs_residual": 1.7596011822090531
+    "mean_abs_residual": 0.13423811716187325,
+    "median_abs_residual": 0.08540347481618937,
+    "max_abs_residual": 1.4597742275636847
   },
   "depth_statistics": {
-    "valid_pixel_pct": 79.2,
+    "valid_pixel_pct": 79.45,
     "min_depth_m": 1.732,
-    "max_depth_m": 4.776,
-    "mean_depth_m": 3.466,
-    "median_depth_m": 3.489
+    "max_depth_m": 4.796,
+    "mean_depth_m": 3.465,
+    "median_depth_m": 3.485
   },
   "quality_checks": {
-    "ransac_inlier_ratio_pct": 99.8,
-    "disparity_valid_coverage_pct": 79.2,
+    "ransac_inlier_ratio_pct": 99.5,
+    "disparity_valid_coverage_pct": 79.45,
     "fundamental_matrix_rank": 2,
-    "depth_valid_pixels_pct": 79.2
+    "depth_valid_pixels_pct": 79.45
   }
 }
