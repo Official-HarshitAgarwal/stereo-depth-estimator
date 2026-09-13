@@ -93,6 +93,26 @@ OS-specific paths or shell calls.
 
 ## Steps to Install & Run
 
+### Windows (PowerShell / CMD) — exact commands
+
+```powershell
+cd "path\to\stereo-depth-estimator"
+
+py -3.10 -m venv venv
+venv\Scripts\activate
+
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+
+python main.py --left data/aloeL.jpg --right data/aloeR.jpg --outdir outputs
+pytest tests/ -v
+```
+
+If you already created a venv with the wrong Python version earlier, delete
+it first: `rmdir /s /q venv`, then run the commands above.
+
+### macOS / Linux
+
 ```bash
 # 1. Clone the repository
 git clone https://github.com/Official-HarshitAgarwal/stereo-depth-estimator.git
