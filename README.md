@@ -79,22 +79,46 @@ stereo-depth-estimator/
 └── README.md
 ```
 
+## Prerequisites
+
+- Python 3.9 or newer (developed and tested on 3.12)
+- pip
+- No GPU, no external services, and no GUI required — the entire project
+  runs from the command line and reads/writes plain files on disk
+
+Tested on Linux; should work unmodified on macOS/Windows since it has no
+OS-specific paths or shell calls.
+
 ## Steps to Install & Run
 
 ```bash
 # 1. Clone the repository
-git clone <your-repo-url>
+git clone https://github.com/Official-HarshitAgarwal/stereo-depth-estimator.git
 cd stereo-depth-estimator
 
-# 2. Install dependencies
-pip install opencv-python numpy matplotlib pytest graphviz
+# 2. (Recommended) create an isolated environment
+python3 -m venv venv
+source venv/bin/activate        # Windows: venv\Scripts\activate
 
-# 3. Run the pipeline on the included sample stereo pair
+# 3. Install dependencies
+pip install -r requirements.txt
+
+# 4. Run the pipeline on the included sample stereo pair
 python3 main.py --left data/aloeL.jpg --right data/aloeR.jpg --outdir outputs
 
-# 4. (Optional) Run on your own stereo pair
+# 5. (Optional) Run on your own stereo pair — must be a roughly horizontal
+#    stereo pair (two shots of the same static scene, camera shifted sideways)
 python3 main.py --left path/to/left.jpg --right path/to/right.jpg --outdir outputs
 ```
+
+No configuration files or environment variables are needed — all tunable
+parameters (RANSAC thresholds, disparity search range, simulated camera
+intrinsics) live in `modules/config.py` and can be edited directly if you
+want to experiment.
+
+**Expected console output:** progress logs for each pipeline stage (feature
+matching counts, RANSAC inlier ratio, disparity coverage), followed by a
+JSON summary printed to stdout. Visual outputs land in `outputs/`.
 
 Outputs are written to `outputs/`:
 | File | Description |
